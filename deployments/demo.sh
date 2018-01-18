@@ -13,28 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. $(dirname ${BASH_SOURCE})/../util.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+. "${DIR}/../util.sh"
 
 run "clear"
 
 kubectl create namespace demos > /dev/null || true
 
 desc "Create a service that fronts any version of this demo"
-run "cat $(relative svc.yaml)"
-run "kubectl --namespace=demos apply -f $(relative svc.yaml)"
+run "cat ${DIR}/svc.yaml"
+run "kubectl --namespace=demos apply -f ${DIR}/svc.yaml"
 
 desc "Deploy v1 of our app"
-run "cat $(relative deployment.yaml)"
-run "kubectl --namespace=demos apply -f $(relative deployment.yaml)"
+run "cat ${DIR}/deployment.yaml"
+run "kubectl --namespace=demos apply -f ${DIR}/deployment.yaml"
 
 # The output of describe is too wide, uncomment the following if needed.
 # desc "Check it"
 # run "kubectl --namespace=demos describe deployment deployment-demo"
 
 tmux new -d -s my-session \
-    "$(dirname $BASH_SOURCE)/split1_control.sh" \; \
-    split-window -v -p 66 "$(dirname ${BASH_SOURCE})/split1_hit_svc.sh" \; \
-    split-window -v "$(dirname ${BASH_SOURCE})/split1_watch.sh v1" \; \
-    split-window -h -d "$(dirname ${BASH_SOURCE})/split1_watch.sh v2" \; \
+    "${DIR}/split1_control.sh" \; \
+    split-window -v -p 66 "${DIR}/split1_hit_svc.sh" \; \
+    split-window -v "${DIR}/split1_watch.sh v1" \; \
+    split-window -h -d "${DIR}/split1_watch.sh v2" \; \
     select-pane -t 0 \; \
     attach \;

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ../util.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+. "${DIR}/../util.sh"
 
 run "clear"
 
@@ -10,9 +11,9 @@ run "curl -sL https://github.com/kubeless/kubeless/releases/download/v0.1.0/kube
 
 run "kubectl get functions"
 
-run "cat simple.py"
+run "cat ${DIR}/simple.py"
 
-run "kubeless function deploy get-python --runtime python2.7 --handler test.simple --from-file simple.py --trigger-http"
+run "kubeless function deploy get-python --runtime python2.7 --handler test.simple --from-file ${DIR}/simple.py --trigger-http"
 
 run "kubectl get functions"
 

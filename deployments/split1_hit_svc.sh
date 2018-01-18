@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. $(dirname ${BASH_SOURCE})/../util.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+. "${DIR}/../util.sh"
 
 cluster=$(yq ".contexts[] | select(.name == \"$(kubectl config current-context)\") | .context.cluster" ~/.kube/config)
 server=$(yq ".clusters[] | select(.name == \"$(kubectl config current-context)\") | .cluster.server" ~/.kube/config)

@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-. $(dirname ${BASH_SOURCE})/../util.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+. "${DIR}/../util.sh"
 
 run "" # wait for first input
 desc "Update the deployment"
-run "cat $(relative deployment.yaml) | sed 's/ v1/ v2/g' | kubectl --namespace=demos apply -f-"
+run "cat ${DIR}/deployment.yaml | sed 's/ v1/ v2/g' | kubectl --namespace=demos apply -f-"
 desc "Rollback the deployment"
 run "kubectl --namespace=demos rollout undo deployment deployment-demo"
